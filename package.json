@@ -1,0 +1,12 @@
+{
+  "name": "springer-spaniels",
+  "version": "1.0.0",
+  "description": "A lovingly honest tribute to the world's most chaotic good dogs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
