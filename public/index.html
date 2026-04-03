@@ -1,166 +1,589 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Springer Spaniels: Adorable Chaos Machines</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            bark:   { DEFAULT: '#7B4F2E', light: '#A0673A', dark: '#5A3520' },
-            moss:   { DEFAULT: '#5A6E3A', light: '#7A9450', dark: '#3D4E28' },
-            cream:  { DEFAULT: '#F5EDD8', light: '#FAF5EC', dark: '#E8D9BB' },
-            mud:    { DEFAULT: '#9C7A52', light: '#B8976A', dark: '#7A5E3C' },
-          }
+            bark:   { 50:'#fdf6ee', 100:'#f7e8d2', 200:'#edcfa5', 300:'#e1ae70', 400:'#d48d45', 500:'#c4752a', 600:'#a85e20', 700:'#8a4719', 800:'#71391a', 900:'#5d3018', 950:'#33180a' },
+            forest: { 50:'#f2f7ee', 100:'#e2efd9', 200:'#c5deb5', 300:'#9ec686', 400:'#79ac5c', 500:'#5a8f3e', 600:'#46722f', 700:'#385a27', 800:'#2f4922', 900:'#283e1e', 950:'#12210d' },
+            stone:  { 50:'#faf7f2', 100:'#f2ebe0', 200:'#e4d5bc', 300:'#d1b88f', 400:'#bc9761', 500:'#aa7f47', 600:'#9a6d3c', 700:'#805733', 800:'#69472e', 900:'#573c29', 950:'#2e1e13' },
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['"Inter"', 'system-ui', 'sans-serif'],
+          },
         }
       }
     }
   </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* Smooth parallax-ish hero */
+    .hero-img { will-change: transform; }
+
+    /* Card photo zoom */
+    .photo-zoom img  { transition: transform 0.5s cubic-bezier(.25,.46,.45,.94); }
+    .photo-zoom:hover img { transform: scale(1.08); }
+
+    /* Stat pill pulse */
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .7; }
+    }
+    .stat-live { animation: pulse-soft 2.5s ease-in-out infinite; }
+
+    /* Wavy section divider */
+    .wave-top { margin-top: -2px; }
+
+    /* Underline decoration */
+    .fancy-underline {
+      text-decoration: underline;
+      text-decoration-color: #d48d45;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 5px;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #faf7f2; }
+    ::-webkit-scrollbar-thumb { background: #c4752a; border-radius: 4px; }
+  </style>
 </head>
-<body class="bg-amber-50 text-stone-800 font-sans">
 
-  <!-- HERO -->
-  <header class="bg-amber-900 text-amber-50 py-24 text-center px-6">
-    <p class="text-green-400 text-xs font-bold uppercase tracking-widest mb-3">A love letter with receipts</p>
-    <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 font-serif">
-      Springer Spaniels:<br />
-      <span class="text-amber-300">Adorable Chaos Machines</span>
-    </h1>
-    <p class="text-lg md:text-xl text-amber-200 max-w-2xl mx-auto leading-relaxed">
-      They have the face of an angel, the energy of a toddler on Red Bull, and absolutely zero remorse.
-      This is their story.
-    </p>
-    <div class="mt-8 text-3xl">🐾 💥 🐾</div>
-  </header>
+<body class="bg-bark-50 text-stone-900 font-body antialiased">
 
-  <!-- CRIMES LIST -->
-  <section class="max-w-4xl mx-auto px-6 py-20">
-    <h2 class="text-4xl font-bold text-amber-900 text-center mb-3 font-serif">Their Most Wanted List</h2>
-    <p class="text-center text-amber-700 mb-12 text-lg">Documented offences. All confirmed. No remorse shown.</p>
+  <!-- ═══════════════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════════════════ -->
+  <nav class="fixed top-0 inset-x-0 z-50 bg-stone-900/80 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-2 text-bark-200 hover:text-bark-300 transition-colors">
+        <span class="text-2xl">🐕</span>
+        <span class="font-display font-bold text-lg tracking-wide">Springer Spaniels</span>
+      </a>
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium text-stone-300">
+        <a href="#crimes"    class="hover:text-bark-300 transition-colors">Their Crimes</a>
+        <a href="#gallery"   class="hover:text-bark-300 transition-colors">Gallery</a>
+        <a href="#survival"  class="hover:text-bark-300 transition-colors">Survival Guide</a>
+        <a href="#testimony" class="hover:text-bark-300 transition-colors">Testimonials</a>
+      </div>
+    </div>
+  </nav>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white border-l-4 border-amber-600 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">The Mud Obsession</h3>
-        <p>They can detect a puddle from 400 metres. They <em>will</em> detour 20 minutes off-route to locate it. They <em>will</em> roll in it. Then they find you specifically to share the experience.</p>
+
+  <!-- ═══════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background photo -->
+    <img
+      src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=1920&q=80"
+      alt="Springer Spaniel hero"
+      class="hero-img absolute inset-0 w-full h-full object-cover object-center"
+    />
+    <!-- Layered gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-stone-950/80 via-stone-900/60 to-bark-900/50"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-transparent to-transparent"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center px-6 max-w-4xl mx-auto pt-24">
+      <div class="inline-flex items-center gap-2 bg-bark-500/30 border border-bark-400/40 text-bark-200 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full mb-8 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full bg-bark-400 stat-live"></span>
+        An Honest & Loving Tribute
       </div>
-      <div class="bg-white border-l-4 border-green-700 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">Selective Deafness</h3>
-        <p>Can hear a biscuit wrapper from two floors up. Cannot hear "NO", "COME", "STOP", or "PLEASE GOD DON'T EAT THAT" under any circumstances.</p>
+
+      <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[1.05] mb-6 drop-shadow-2xl">
+        Springer Spaniels:<br/>
+        <span class="text-bark-300 italic">Adorable Chaos</span><br/>
+        <span class="text-bark-200">Machines.</span>
+      </h1>
+
+      <p class="text-stone-300 text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+        They have the face of an angel, the attention span of a hummingbird on espresso,
+        and absolutely <em class="text-bark-300 not-italic font-semibold">zero remorse</em> for any of it.
+        This is their story.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#crimes" class="bg-bark-500 hover:bg-bark-400 text-white font-semibold px-8 py-4 rounded-full text-base transition-all duration-200 shadow-lg hover:shadow-bark-500/30 hover:-translate-y-0.5">
+          Read the Charges →
+        </a>
+        <a href="#gallery" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-full text-base backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5">
+          See Gallery
+        </a>
       </div>
-      <div class="bg-white border-l-4 border-amber-800 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">Counter Surfing</h3>
-        <p>They have the arm span of a basketball player and the ambition of a startup founder. Nothing on your kitchen counter is safe. The audacity is breathtaking — they make eye contact while doing it.</p>
-      </div>
-      <div class="bg-white border-l-4 border-amber-600 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">3am Zoomies</h3>
-        <p>Scientists have studied this. No one understands it. One moment: sleeping peacefully. Next: full-speed laps around the house, rebounding off furniture, vibrating at a frequency that wakes the neighbors.</p>
-      </div>
-      <div class="bg-white border-l-4 border-green-700 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">The Shoe Situation</h3>
-        <p>They don't chew both shoes. That would be too practical. They take one shoe — always one — to some location that will never be found. This is not destruction. This is art.</p>
-      </div>
-      <div class="bg-white border-l-4 border-amber-800 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">Sock Theft Ring</h3>
-        <p>They do not eat the socks. They collect them. They have a hoard. They are running an underground sock economy and you are simply not privy to the exchange rate.</p>
-      </div>
-      <div class="bg-white border-l-4 border-amber-600 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">Rolling in Gross Stuff</h3>
-        <p>Fox poo. Dead fish. Something unidentifiable. They find these things. They treasure them. They marinate in them. Then they look at you with pure joy because they want to share this gift with you.</p>
-      </div>
-      <div class="bg-white border-l-4 border-green-700 rounded-xl p-6 shadow-sm">
-        <h3 class="font-bold text-xl text-amber-900 mb-2">The "I'm Starving" Performance</h3>
-        <p>They were fed 20 minutes ago. And yet — somehow — they are now performing a death scene worthy of a BAFTA, flopped dramatically across the kitchen floor.</p>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/40 flex flex-col items-center gap-1 text-xs">
+      <span>scroll</span>
+      <svg class="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       STATS BAR
+  ══════════════════════════════════════════════════════ -->
+  <section class="bg-stone-900 py-10 border-y border-stone-700/50">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="text-center text-stone-500 text-xs uppercase tracking-widest font-semibold mb-8">Official Springer Spaniel Metrics — Independently Verified</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+        <div class="text-center group">
+          <div class="text-4xl font-display font-black text-bark-400 mb-1 group-hover:text-bark-300 transition-colors">11<span class="text-bark-600">/10</span></div>
+          <div class="text-stone-400 text-sm font-medium">Energy Level</div>
+          <div class="mt-2 h-1.5 bg-stone-700 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-bark-600 to-bark-400 rounded-full w-full stat-live"></div>
+          </div>
+        </div>
+
+        <div class="text-center group">
+          <div class="text-4xl font-display font-black text-amber-500 mb-1 group-hover:text-amber-400 transition-colors">☠️</div>
+          <div class="text-stone-400 text-sm font-medium">Mud Obsession</div>
+          <div class="mt-2">
+            <span class="inline-block bg-amber-900/40 border border-amber-700/50 text-amber-400 text-xs font-bold px-3 py-0.5 rounded-full">EXTREME</span>
+          </div>
+        </div>
+
+        <div class="text-center group">
+          <div class="text-4xl font-display font-black text-forest-400 mb-1 group-hover:text-forest-300 transition-colors">0<span class="text-forest-700">%</span></div>
+          <div class="text-stone-400 text-sm font-medium">Listening Skills</div>
+          <div class="mt-2">
+            <span class="inline-block bg-forest-900/40 border border-forest-700/50 text-forest-400 text-xs font-bold px-3 py-0.5 rounded-full">OPTIONAL</span>
+          </div>
+        </div>
+
+        <div class="text-center group">
+          <div class="text-4xl font-display font-black text-rose-400 mb-1 group-hover:text-rose-300 transition-colors">∞</div>
+          <div class="text-stone-400 text-sm font-medium">Cuteness Factor</div>
+          <div class="mt-2">
+            <span class="inline-block bg-rose-900/40 border border-rose-700/50 text-rose-400 text-xs font-bold px-3 py-0.5 rounded-full">OFF THE CHARTS</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="bg-amber-900 py-20">
+
+  <!-- ═══════════════════════════════════════════════════
+       TOP CRIMES
+  ══════════════════════════════════════════════════════ -->
+  <section id="crimes" class="py-24 bg-bark-50">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-16">
+        <p class="text-bark-500 font-semibold text-sm uppercase tracking-widest mb-3">Documented. Witnessed. Unpunished.</p>
+        <h2 class="font-display text-5xl sm:text-6xl font-black text-stone-900 mb-4">
+          Their Top <span class="fancy-underline text-bark-600">Crimes</span>
+        </h2>
+        <p class="text-stone-500 text-lg max-w-xl mx-auto">
+          All charges confirmed by multiple witnesses. All charges subsequently dropped
+          because they looked up with those eyes.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+
+        <!-- Crime 1: Mud -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80"
+                 alt="Dog running through mud" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">💧</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #1</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">Mud Diving</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              A Springer does not merely walk through mud — they <em>commune</em> with it. They can locate
+              a single puddle in an otherwise bone-dry park through means that science cannot explain. They
+              will return to you looking like a swamp creature wearing your dog's face, wagging furiously.
+              You just bathed them two hours ago. They know this.
+            </p>
+          </div>
+        </article>
+
+        <!-- Crime 2: Selective Deafness -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800&q=80"
+                 alt="Dog looking away innocently" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">🔇</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #2</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">Selective Deafness</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              Springer Spaniels can hear a crisp packet open from three floors away, a fridge door open through a closed
+              window, or the word "walk" whispered under your breath. "COME HERE" when they're sniffing
+              something unspeakable? That frequency simply does not register. Scientists are baffled. The dogs are not.
+            </p>
+          </div>
+        </article>
+
+        <!-- Crime 3: Counter Surfing -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=800&q=80"
+                 alt="Happy dog looking pleased with himself" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">🍗</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #3</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">Counter Surfing</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              Your Springer has not stolen food from the counter. They have <em>redistributed</em> it. The roast chicken
+              you left to rest? Redistributed. The Christmas ham? Also redistributed. They view the kitchen
+              as a communal resource and your objections as purely advisory. They make eye contact while doing it.
+            </p>
+          </div>
+        </article>
+
+        <!-- Crime 4: 3am Zoomies -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80"
+                 alt="Dog mid-sprint absolutely losing it" class="w-full h-full object-cover object-top" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">🌀</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #4</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">3am Zoomies</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              Without warning. Without reason. Possibly at 3:17am on a Tuesday. Your Springer will achieve
+              velocities previously unmeasured in domestic mammals, rebounding off furniture in physics-defying
+              figure-eights. It lasts 90 seconds. They sleep for 14 hours after. You will never understand it.
+              You were not meant to.
+            </p>
+          </div>
+        </article>
+
+        <!-- Crime 5: Sock Theft -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1477884213360-7e9d7dcc8f9b?w=800&q=80"
+                 alt="Dog looking mischievous" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">🧦</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #5</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">The Sock Economy</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              They don't eat the socks. They <em>collect</em> them. They have a hoard. In a location that will never be
+              found. They are running an underground sock economy and you are simply not privy to the
+              exchange rate. Every sock you own will eventually end up in the hoard. This is non-negotiable.
+            </p>
+          </div>
+        </article>
+
+        <!-- Crime 6: Rolling in Dead Things -->
+        <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-bark-100">
+          <div class="photo-zoom overflow-hidden h-52">
+            <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800&q=80"
+                 alt="Dog looking suspiciously happy" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-2xl mt-0.5">💀</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-bark-500 bg-bark-50 px-2 py-0.5 rounded-full">Charge #6</span>
+                <h3 class="font-display text-xl font-bold text-stone-900 mt-1">Rolling in Dead Things</h3>
+              </div>
+            </div>
+            <p class="text-stone-500 text-sm leading-relaxed">
+              Fox poo. Dead worm. Something unidentifiable that may predate the Roman Empire. They find these
+              things. They <em>treasure</em> them. They apply them with the focused dedication of someone
+              putting on expensive cologne. Then they look up at you with pure, unbridled joy — because they
+              want to share this gift. They love you that much.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       PHOTO GALLERY
+  ══════════════════════════════════════════════════════ -->
+  <section id="gallery" class="py-24 bg-stone-900">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <div class="text-center mb-14">
+        <p class="text-bark-400 font-semibold text-sm uppercase tracking-widest mb-3">Exhibit A through H</p>
+        <h2 class="font-display text-5xl sm:text-6xl font-black text-white mb-4">
+          They're Lucky They're <span class="text-bark-300 italic">Cute</span>
+        </h2>
+        <p class="text-stone-400 text-lg max-w-xl mx-auto">
+          Charges: immediately dropped. Every single time. And they know it.
+        </p>
+      </div>
+
+      <!-- Masonry-style grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        <div class="photo-zoom col-span-2 row-span-2 rounded-2xl overflow-hidden shadow-lg aspect-square">
+          <img src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=1920&q=80"
+               alt="Springer Spaniel" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg aspect-square">
+          <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80"
+               alt="Dog portrait" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg aspect-square">
+          <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800&q=80"
+               alt="Dog face" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg aspect-square">
+          <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?w=800&q=80"
+               alt="Happy dog" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg aspect-square">
+          <img src="https://images.unsplash.com/photo-1477884213360-7e9d7dcc8f9b?w=800&q=80"
+               alt="Dog outdoors" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom col-span-2 rounded-2xl overflow-hidden shadow-lg h-52">
+          <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80"
+               alt="Dog running" class="w-full h-full object-cover object-center" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg h-52">
+          <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800&q=80"
+               alt="Golden dog" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="photo-zoom rounded-2xl overflow-hidden shadow-lg h-52">
+          <img src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80"
+               alt="Dog playing" class="w-full h-full object-cover" />
+        </div>
+
+      </div>
+
+      <p class="text-center text-stone-500 mt-8 text-sm italic">
+        "I looked at the vet bill and then looked at that face and somehow felt fine about it." — Every Springer owner, always
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       SURVIVAL GUIDE
+  ══════════════════════════════════════════════════════ -->
+  <section id="survival" class="py-24 bg-forest-950 text-white">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-amber-50 text-center mb-3 font-serif">They're Lucky They're Cute</h2>
-      <p class="text-center text-amber-300 mb-12 text-lg">Evidence A through F in the ongoing case for their defence.</p>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600&h=600&fit=crop" alt="Springer Spaniel" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop" alt="Springer Spaniel in field" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop" alt="Spaniel running" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600&h=600&fit=crop" alt="Springer puppy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=600&fit=crop" alt="Dogs running" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-        <div class="rounded-xl overflow-hidden shadow-lg aspect-square">
-          <img src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=600&h=600&fit=crop" alt="Spaniel portrait" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
-      </div>
-      <p class="text-center text-amber-400 mt-8 italic text-sm">Look at them. Charges: dropped. Every time.</p>
-    </div>
-  </section>
 
-  <!-- SURVIVAL GUIDE -->
-  <section class="max-w-4xl mx-auto px-6 py-20">
-    <h2 class="text-4xl font-bold text-amber-900 text-center mb-3 font-serif">The Springer Spaniel Survival Guide</h2>
-    <p class="text-center text-amber-700 mb-12 text-lg">Hard-won wisdom from people who have been through it.</p>
-    <div class="space-y-6">
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">1.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Accept that you are not the alpha. You are the obstacle.</h3>
-          <p>The sooner you stop trying to "train" them and start negotiating, the happier everyone will be. You have leverage (treats). Use it wisely.</p>
-        </div>
+      <div class="text-center mb-16">
+        <p class="text-forest-400 font-semibold text-sm uppercase tracking-widest mb-3">Hard-won wisdom from survivors</p>
+        <h2 class="font-display text-5xl sm:text-6xl font-black text-white mb-4">
+          The Springer Spaniel<br/><span class="text-forest-300 italic">Survival Guide</span>
+        </h2>
+        <p class="text-forest-300/70 text-lg max-w-lg mx-auto">
+          What they don't tell you in the breed description.
+        </p>
       </div>
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">2.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Never make eye contact during the zoomies.</h3>
-          <p>Eye contact is an invitation. It escalates. Stand very still and wait for the storm to pass. Do not speak. Do not react. You are a tree.</p>
+
+      <div class="space-y-5">
+
+        <div class="flex gap-5 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-bark-600/30 border border-bark-500/40 flex items-center justify-center font-display font-black text-bark-300 text-lg">1</div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-white mb-1">Accept that the mud is non-negotiable.</h3>
+            <p class="text-stone-400 text-sm leading-relaxed">You can avoid puddles, take only paved routes, and wrap your dog in plastic wrap. None of this will work. There will be mud. Embrace it. Buy a good hose.</p>
+          </div>
         </div>
-      </div>
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">3.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Own two of every shoe. Keep one pair in a locked vault.</h3>
-          <p>This is not paranoia. This is infrastructure. Think of it as shoe redundancy. The shoe you are wearing right now is being assessed.</p>
+
+        <div class="flex gap-5 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-bark-600/30 border border-bark-500/40 flex items-center justify-center font-display font-black text-bark-300 text-lg">2</div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-white mb-1">Nothing on the counter is truly safe.</h3>
+            <p class="text-stone-400 text-sm leading-relaxed">If it is within reach of an outstretched nose, it is at risk. If it smells like food, it is at severe risk. Move your whole life to above 1.5 metres or make peace with the redistribution.</p>
+          </div>
         </div>
-      </div>
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">4.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Exercise them into a stupor. Every. Single. Day.</h3>
-          <p>An under-exercised Springer is a force of pure chaos. Two hours of running is not enough. It is a warm-up. They were bred to hunt all day. Plan accordingly.</p>
+
+        <div class="flex gap-5 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-bark-600/30 border border-bark-500/40 flex items-center justify-center font-display font-black text-bark-300 text-lg">3</div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-white mb-1">Keep one shoe in a locked safe at all times.</h3>
+            <p class="text-stone-400 text-sm leading-relaxed">They won't destroy both shoes. Just one. Always one. But which one will be taken is unknowable. Maintain a minimum reserve of one secure shoe per pair so you're never fully stranded.</p>
+          </div>
         </div>
-      </div>
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">5.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Budget for the "incident fund."</h3>
-          <p>Something will be destroyed. Something will be eaten that shouldn't be. Something will require a vet visit that begins with "so, funny story." Set money aside. It's not if. It's when.</p>
+
+        <div class="flex gap-5 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-bark-600/30 border border-bark-500/40 flex items-center justify-center font-display font-black text-bark-300 text-lg">4</div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-white mb-1">Exercise is not optional. It is survival.</h3>
+            <p class="text-stone-400 text-sm leading-relaxed">An unwalked Springer is a Springer with time on their hands and ideas in their head. Walk them. Run them. Field them. Whatever it takes to convert that energy into tired happiness rather than creative destruction.</p>
+          </div>
         </div>
-      </div>
-      <div class="flex gap-5 items-start bg-white rounded-xl p-6 shadow-sm border border-amber-100">
-        <span class="text-3xl font-bold text-amber-300 mt-1 shrink-0">6.</span>
-        <div>
-          <h3 class="font-bold text-lg text-amber-900 mb-1">Remember: they love you unconditionally, immediately, and forever.</h3>
-          <p>After every crime, every muddy paw on white jeans, every sock heist, every 3am sprint — they look at you with those ridiculous eyes and you forgive everything immediately. This is their superpower. They know it.</p>
+
+        <div class="flex gap-5 bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/8 transition-colors">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-bark-600/30 border border-bark-500/40 flex items-center justify-center font-display font-black text-bark-300 text-lg">5</div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-white mb-1">When they look at you with those eyes — you will forgive them.</h3>
+            <p class="text-stone-400 text-sm leading-relaxed">This is not a weakness. This is the whole point. The chaos, the mud, the sock hoard — all of it is a setup for those moments where you realize this ridiculous animal loves you with absolutely everything it has. Worth it.</p>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="bg-stone-800 text-amber-50 py-10 text-center">
-    <p class="text-2xl font-bold font-serif mb-2">Still worth it. 10/10. Would adopt again.</p>
-    <p class="text-amber-400 text-sm">Made with love, mild exasperation, and dog hair on every surface.</p>
-    <div class="mt-4 text-2xl">🐾 🐕 🐾</div>
+
+  <!-- ═══════════════════════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════════════════════════ -->
+  <section id="testimony" class="py-24 bg-bark-50">
+    <div class="max-w-5xl mx-auto px-6">
+
+      <div class="text-center mb-16">
+        <p class="text-bark-500 font-semibold text-sm uppercase tracking-widest mb-3">Real accounts from the field</p>
+        <h2 class="font-display text-5xl sm:text-6xl font-black text-stone-900 mb-4">
+          Survivor <span class="fancy-underline text-bark-600">Testimonials</span>
+        </h2>
+        <p class="text-stone-500 text-lg max-w-lg mx-auto">
+          Names withheld to protect the innocent. The dogs know who they are.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <blockquote class="bg-white rounded-3xl p-8 shadow-sm border border-bark-100 hover:shadow-md transition-shadow">
+          <div class="text-bark-300 text-5xl font-display leading-none mb-4">"</div>
+          <p class="text-stone-600 leading-relaxed mb-6 text-sm">
+            I haven't worn a matching pair of clean socks in three years. I have purchased approximately forty pairs
+            of socks in that time. I do not know where they are. He does.
+          </p>
+          <footer class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-bark-200 flex items-center justify-center text-bark-700 font-bold text-sm">M</div>
+            <div>
+              <div class="font-semibold text-stone-900 text-sm">Mark T.</div>
+              <div class="text-stone-400 text-xs">Owner of Biscuit, 4 years</div>
+            </div>
+          </footer>
+        </blockquote>
+
+        <blockquote class="bg-white rounded-3xl p-8 shadow-sm border border-bark-100 hover:shadow-md transition-shadow">
+          <div class="text-bark-300 text-5xl font-display leading-none mb-4">"</div>
+          <p class="text-stone-600 leading-relaxed mb-6 text-sm">
+            She ate my passport the morning of an international flight. I missed the flight. I got the passport reissued.
+            She was on the sofa when I came back, tail going, absolutely delighted to see me.
+            I gave her a treat. I don't know why I gave her a treat.
+          </p>
+          <footer class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-forest-200 flex items-center justify-center text-forest-700 font-bold text-sm">S</div>
+            <div>
+              <div class="font-semibold text-stone-900 text-sm">Sarah L.</div>
+              <div class="text-stone-400 text-xs">Owner of Clementine, 2 years</div>
+            </div>
+          </footer>
+        </blockquote>
+
+        <blockquote class="bg-white rounded-3xl p-8 shadow-sm border border-bark-100 hover:shadow-md transition-shadow">
+          <div class="text-bark-300 text-5xl font-display leading-none mb-4">"</div>
+          <p class="text-stone-600 leading-relaxed mb-6 text-sm">
+            He did the zoomies through a dinner party. He cleared a charcuterie board, redistributed two glasses of
+            red wine, and received a standing ovation from our guests. He now attends every dinner party.
+            He considers it his event. We are guests at his dinner party.
+          </p>
+          <footer class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-amber-200 flex items-center justify-center text-amber-700 font-bold text-sm">C</div>
+            <div>
+              <div class="font-semibold text-stone-900 text-sm">Claire & Tom R.</div>
+              <div class="text-stone-400 text-xs">Owners of Waffles, 3 years</div>
+            </div>
+          </footer>
+        </blockquote>
+
+        <blockquote class="bg-white rounded-3xl p-8 shadow-sm border border-bark-100 hover:shadow-md transition-shadow">
+          <div class="text-bark-300 text-5xl font-display leading-none mb-4">"</div>
+          <p class="text-stone-600 leading-relaxed mb-6 text-sm">
+            I spent forty minutes calling her name in the park. She was twelve feet away the entire time,
+            staring at a hole. She looked up the instant I opened the car door.
+            She got in immediately. She knew exactly what she was doing. We both know she knew.
+          </p>
+          <footer class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-rose-200 flex items-center justify-center text-rose-700 font-bold text-sm">J</div>
+            <div>
+              <div class="font-semibold text-stone-900 text-sm">James O.</div>
+              <div class="text-stone-400 text-xs">Owner of Maple, 6 years (still going)</div>
+            </div>
+          </footer>
+        </blockquote>
+
+      </div>
+
+      <!-- Final verdict banner -->
+      <div class="mt-14 bg-bark-600 rounded-3xl p-10 text-center text-white shadow-xl">
+        <p class="text-bark-200 text-sm font-semibold uppercase tracking-widest mb-4">Official Verdict</p>
+        <h3 class="font-display text-4xl sm:text-5xl font-black mb-4">
+          10/10.<br/>
+          <span class="text-bark-200 text-3xl sm:text-4xl italic">Would rescue from mud again.</span>
+        </h3>
+        <p class="text-bark-100/80 max-w-xl mx-auto leading-relaxed">
+          They are mud-caked, selectively deaf, counter-surfing, shoe-destroying, sock-hoarding,
+          fox-poo-perfumed disasters — and they are the warmest thing pressed against your leg
+          on a cold night, and the most enthusiastic greeting you will ever receive after a five-minute absence.
+          <strong class="text-white">We wouldn't have it any other way.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════ -->
+  <footer class="bg-stone-950 text-stone-500 py-10 text-center text-sm">
+    <div class="max-w-md mx-auto px-6">
+      <p class="text-2xl mb-3">🐾</p>
+      <p class="mb-1">Made with equal parts love and exasperation.</p>
+      <p>No Springer Spaniels were harmed in the making of this site.<br/>Several shoes were. All socks are unaccounted for.</p>
+    </div>
   </footer>
 
 </body>
